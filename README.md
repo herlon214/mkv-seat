@@ -1,11 +1,12 @@
 # MKV-SEAT
 MKV [S]ubtitle [E]xtract [A]nd [T]ranslate using Google Translation API.
 
-The translation is optional, if you only want to extract the subtitle omit the flags `language-from`, `language-to` and `key`.
+The translation is optional, if you only want to extract the subtitle omit the flags `lang-from`, `lang-to` and `key`.
 
 **You must have installed the mkvtoolnix** (https://mkvtoolnix.download/downloads.html) on your machine, otherwise it will not work.
 
 ## Usage
+Checkout the releases page [https://github.com/herlon214/mkv-seat/releases](https://github.com/herlon214/mkv-seat/releases)
 ```
 $ mkv-seat
           _                               _
