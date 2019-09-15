@@ -1,0 +1,25 @@
+[Script Info]
+PlayResX: 848
+PlayResY: 480
+ScriptType: v4.00+
+Title: HorribleSubs
+WrapStyle: 2
+
+[V4 Styles]
+Format: Name, Alignment, Angle, BackColour, Bold, BorderStyle, Encoding, Fontname, Fontsize, Italic, MarginL, MarginR, MarginV, Outline, OutlineColour, PrimaryColour, ScaleX, ScaleY, SecondaryColour, Shadow, Spacing, Underline
+Style: Default,2,0.000,&H00000000,1,1,1,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultHigh,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultLTop,7,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultLow,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultMed,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultRHigh,1,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultRaisedL,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultRaisedR,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: DefaultTopR,9,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: Italics,2,0.000,&H00000000,1,1,0,Open Sans Semibold,36.000,0,0,0,28,1.700,&H00020713,&H00ffffff,100.000,100.000,&H000000ff,0.000,0.000,0
+Style: OS,8,0.000,&H7f404040,0,1,0,Open Sans Semibold,33.000,0,1,1,20,2.000,&H00000000,&H00ffffff,100.000,100.000,&H0000ffff,1.000,0.000,0
+Style: On Top,8,0.000,&H7f404040,0,1,0,Open Sans Semibold,36.000,0,27,27,29,2.000,&H00000000,&H00ffffff,100.000,100.000,&H0000ffff,1.000,0.000,0
+
+[Events]
+Format: Start, End, Layer, MarginL, MarginR, MarginV, Name, Style, Text
+Dialogue: 00:00:01.00,00:00:02.98,0,0,0,0,NTP,Default,Example Subtitle
