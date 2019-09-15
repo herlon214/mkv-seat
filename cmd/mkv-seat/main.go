@@ -78,7 +78,10 @@ func Run(cmd *cobra.Command, args []string) {
 	filePieces := strings.Split(filePath, "/")
 	file := filePieces[len(filePieces)-1]
 	fileName := strings.Split(file, ".")[0]
-	outputFolder := strings.Join(filePieces[:len(filePieces)-1], "/")
+	outputFolder := "."
+	if len(filePieces) > 1 {
+		outputFolder = strings.Join(filePieces[:len(filePieces)-1], "/")
+	}
 
 	// Extract subtitle
 	subtitle := mkv.ExtractSubtitle(filePath, logger)
@@ -112,7 +115,7 @@ func Run(cmd *cobra.Command, args []string) {
 		logger.Panicf("Error to save output %s.%s file: %s", fileName, outputFormat, err.Error())
 	}
 
-	logger.Info("Executed successfully!")
+	logger.Infof("Output subtitle saved to %s", outputFile)
 
 	return
 }
