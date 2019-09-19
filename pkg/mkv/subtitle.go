@@ -58,6 +58,19 @@ func ExtractSubtitle(filePath string, logger *logrus.Logger) *astisub.Subtitles 
 		logger.Errorf("[MKV] Failed to remove tmp file: %s", err.Error())
 	}
 
+	// Parse the subtitle
+	for i, item := range subtitle.Items {
+		for j, line := range item.Lines {
+			for k := range line.Items {
+				// Fix breaklines
+				text := subtitle.Items[i].Lines[j].Items[k].Text
+				text = strings.Replace(text, "\\N", " \n ", -1)
+
+				subtitle.Items[i].Lines[j].Items[k].Text = text
+			}
+		}
+	}
+
 	logger.Info("[MKV] Subtitle extracted successfully")
 
 	return subtitle
