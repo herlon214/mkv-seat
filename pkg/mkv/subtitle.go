@@ -17,7 +17,7 @@ func ExtractSubtitle(filePath string, logger *logrus.Logger) *astisub.Subtitles 
 	filePieces := strings.Split(filePath, "/")
 	fileNameWithExtension := filePieces[len(filePieces)-1]
 	fileNamePieces := strings.Split(fileNameWithExtension, ".")
-	fileName := fileNamePieces[0]
+	fileName := strings.Join(fileNamePieces[0:len(fileNamePieces)-1], ".")
 
 	logger.Infof("[MKV] Extracting subtitle for %s...", fileName)
 
