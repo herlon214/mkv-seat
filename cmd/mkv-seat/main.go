@@ -74,17 +74,18 @@ func Run(cmd *cobra.Command, args []string) {
 		languageToTag = tag
 	}
 
-	filePath := args[0]
-	filePieces := strings.Split(filePath, "/")
-	file := filePieces[len(filePieces)-1]
-	fileName := strings.Split(file, ".")[0]
+	path := args[0]
+	pathPieces := strings.Split(path, "/")
+	file := pathPieces[len(pathPieces)-1]
+	filePieces := strings.Split(file, ".")
+	fileName := strings.Join(filePieces[0:len(filePieces)-1], ".")
 	outputFolder := "."
-	if len(filePieces) > 1 {
-		outputFolder = strings.Join(filePieces[:len(filePieces)-1], "/")
+	if len(pathPieces) > 1 {
+		outputFolder = strings.Join(pathPieces[:len(pathPieces)-1], "/")
 	}
 
 	// Extract subtitle
-	subtitle := mkv.ExtractSubtitle(filePath, logger)
+	subtitle := mkv.ExtractSubtitle(path, logger)
 	if subtitle == nil {
 		logger.Panic("Failed to extract subtitle")
 	}
