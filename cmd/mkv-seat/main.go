@@ -22,6 +22,8 @@ var (
 	languageTo      string
 	languageToTag   language.Tag
 	outputFormat    string
+	skipExisting    bool
+	logger          = logrus.New()
 )
 
 func main() {
@@ -44,14 +46,12 @@ func main() {
 	rootCmd.Flags().StringVarP(&apiKey, "key", "k", "", "Google Cloud Translation Api Key, e.g: AIvaSyCiLjaWkykUoROHq2lqqbVoUA3ZTyv7xQI")
 	rootCmd.Flags().StringVarP(&languageFrom, "lang-from", "f", "", "Original subtitle language (following the BCP 47), e.g: en")
 	rootCmd.Flags().StringVarP(&languageTo, "lang-to", "t", "", "Output subtitle language (following the BCP 47), e.g: pt-BR")
-
+	rootCmd.Flags().BoolVar(&skipExisting, "skip-existing", false, "Skip files generation if the subtitle already exists")
 	rootCmd.Execute()
 }
 
 // Run is the body of the root command
 func Run(cmd *cobra.Command, args []string) {
-	logger := logrus.New()
-
 	if len(args) == 0 {
 		cmd.PrintErrln("You must specify at least one mkv file")
 	}
@@ -82,6 +82,12 @@ func Run(cmd *cobra.Command, args []string) {
 	outputFolder := "."
 	if len(pathPieces) > 1 {
 		outputFolder = strings.Join(pathPieces[:len(pathPieces)-1], "/")
+	}
+
+	// Check if the skip is enabled
+	if skipExisting && FileExists(fmt.Sprintf("%s/%s.str", outputFolder, fileName)) {
+		logger.Infof("Skipping generation for %s", path)
+		return
 	}
 
 	// Extract subtitle
@@ -167,4 +173,14 @@ func Translate(subtitle *astisub.Subtitles, logger *logrus.Logger) *astisub.Subt
 	}
 
 	return subtitle
+}
+
+// FileExists verify if the srt already exists
+func FileExists(file string) bool {
+	_, err := os.Stat(file)
+	if os.IsNotExist(err) {
+		return true
+	}
+
+	return false
 }
