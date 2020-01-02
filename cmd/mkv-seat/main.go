@@ -85,7 +85,7 @@ func Run(cmd *cobra.Command, args []string) {
 	}
 
 	// Check if the skip is enabled
-	if skipExisting && FileExists(fmt.Sprintf("%s/%s.str", outputFolder, fileName)) {
+	if skipExisting && FileExists(fmt.Sprintf("%s/%s.srt", outputFolder, fileName)) {
 		logger.Infof("Skipping generation for %s", path)
 		return
 	}
@@ -178,9 +178,5 @@ func Translate(subtitle *astisub.Subtitles, logger *logrus.Logger) *astisub.Subt
 // FileExists verify if the srt already exists
 func FileExists(file string) bool {
 	_, err := os.Stat(file)
-	if os.IsNotExist(err) {
-		return true
-	}
-
-	return false
+	return !os.IsNotExist(err)
 }
