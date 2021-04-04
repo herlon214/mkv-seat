@@ -25,8 +25,15 @@ Flags:
   -k, --key string             Google Cloud Translation Api Key, e.g: AIvaSyCiLjaWkykUoROHq2lqqbVoUA3ZTyv7xQI
   -f, --lang-from string       Original subtitle language (following the BCP 47), e.g: en
   -t, --lang-to string         Output subtitle language (following the BCP 47), e.g: pt-BR
+      --notify                 Sends a notification
   -o, --output-format string   Output format, e.g: srt (default "srt")
 ```
+
+### Notification
+You can enable sending a Pushover notification after a successful extraction setting the environment variables:
+`PUSHOVER_API_KEY` and `PUSHOVER_USER_KEY`
+
+For now only Pushover is available for notifications. You also need to use the flag `--notify`.
 
 ### Exctracting Subtitles Only
 ```

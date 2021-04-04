@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/herlon214/mkv-seat/pkg/notification"
+
 	"github.com/asticode/go-astisub"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -16,14 +18,18 @@ import (
 )
 
 var (
-	apiKey          string
-	languageFrom    string
-	languageFromTag language.Tag
-	languageTo      string
-	languageToTag   language.Tag
-	outputFormat    string
-	skipExisting    bool
-	logger          = logrus.New()
+	translatorApiKey string
+	pushoverApiKey   string
+	pushoverUserKey  string
+	notify           bool
+	languageFrom     string
+	languageFromTag  language.Tag
+	languageTo       string
+	languageToTag    language.Tag
+	outputFormat     string
+	skipExisting     bool
+	logger           = logrus.New()
+	notificator      notification.Notificator
 )
 
 func main() {
@@ -43,10 +49,11 @@ func main() {
 
 	// Add flags to the command
 	rootCmd.Flags().StringVarP(&outputFormat, "output-format", "o", "srt", "Output format, e.g: srt")
-	rootCmd.Flags().StringVarP(&apiKey, "key", "k", "", "Google Cloud Translation Api Key, e.g: AIvaSyCiLjaWkykUoROHq2lqqbVoUA3ZTyv7xQI")
+	rootCmd.Flags().StringVarP(&translatorApiKey, "key", "k", "", "Google Cloud Translation Api Key, e.g: AIvaSyCiLjaWkykUoROHq2lqqbVoUA3ZTyv7xQI")
 	rootCmd.Flags().StringVarP(&languageFrom, "lang-from", "f", "", "Original subtitle language (following the BCP 47), e.g: en")
 	rootCmd.Flags().StringVarP(&languageTo, "lang-to", "t", "", "Output subtitle language (following the BCP 47), e.g: pt-BR")
 	rootCmd.Flags().BoolVar(&skipExisting, "skip-existing", false, "Skip files generation if the subtitle already exists")
+	rootCmd.Flags().BoolVar(&notify, "notify", false, "Sends a notification")
 	rootCmd.Execute()
 }
 
@@ -54,6 +61,15 @@ func main() {
 func Run(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		cmd.PrintErrln("You must specify at least one mkv file")
+	}
+
+	// Load api keys from env
+	pushoverApiKey = os.Getenv("PUSHOVER_API_KEY")
+	pushoverUserKey = os.Getenv("PUSHOVER_USER_KEY")
+
+	if pushoverUserKey != "" && pushoverUserKey != "" && notify {
+		logger.Infoln("Pushover credentials found, setting up the notificator")
+		notificator = notification.NewPushover(pushoverUserKey, pushoverApiKey)
 	}
 
 	// Check for valid language tags in order to fail fast
@@ -97,7 +113,7 @@ func Run(cmd *cobra.Command, args []string) {
 	}
 
 	// Check if it needs to be translated
-	if apiKey != "" && languageFrom != "" && languageTo != "" {
+	if translatorApiKey != "" && languageFrom != "" && languageTo != "" {
 		logger.Infof("Translating subtitle from %s to %s", languageFrom, languageTo)
 		subtitle = Translate(subtitle, logger)
 	}
@@ -124,6 +140,14 @@ func Run(cmd *cobra.Command, args []string) {
 
 	logger.Infof("Output subtitle saved to %s", outputFile)
 
+	// Check for sending notification
+	if notificator != nil {
+		err := notificator.Notify("Subtitle extracted", fmt.Sprintf("A new subtitle was extracted successfully for the file %s", fileName))
+		if err != nil {
+			logger.Infoln("Notification sent!")
+		}
+	}
+
 	return
 }
 
@@ -149,7 +173,7 @@ func Translate(subtitle *astisub.Subtitles, logger *logrus.Logger) *astisub.Subt
 	logger.Infof("[Translation] Collected %d texts", len(texts))
 
 	// Create the translator
-	translator := translator.NewGoogleTranslator(ctx, apiKey, logger)
+	translator := translator.NewGoogleTranslator(ctx, translatorApiKey, logger)
 
 	// Translate the given texts
 	translations, err := translator.Translate(texts, languageFromTag, languageToTag)
